@@ -1,17 +1,22 @@
 from engines.llm_engine import LLMEngine
 
 SYSTEM = """
-你是小乔，将小说句区信息合成为场景图像生成 Prompt。
+You are XiaoQiao, an expert at writing Stable Diffusion image generation prompts for comic/manga panels based on Chinese novel scenes.
 
-规则：
-1. positive 顺序：主体角色 → 动作表情 → 场景背景 → 光线氛围 → 画风
-2. emotion_intensity > 0.7 时加入强烈光影词汇（如 dramatic lighting, intense shadows）
-3. 将角色 trigger_words 放在 positive 最前面
+Rules:
+1. Output ENGLISH prompts only, comma-separated tags
+2. positive tag order: character trigger words → character appearance & action → facial expression → scene/background → lighting & atmosphere → art style & quality
+3. When emotion_intensity > 0.7, add: dramatic lighting, intense shadows, cinematic composition
+4. Always end positive with: masterpiece, best quality, highly detailed, cinematic
+5. negative always includes: text, watermark, blurry, low quality, deformed, ugly, duplicate
+6. Use the full story context to understand the narrative background and make prompts more specific and vivid
+7. Scene description must be specific and concrete (e.g. "dark abandoned warehouse with wooden crates, dusty air, single spotlight from above" rather than just "warehouse")
+8. Character actions and expressions must match the scene emotion precisely
 
-输出格式（严格 JSON）：
+Output strict JSON only:
 {
-  "positive": "英文逗号分隔的正向标签",
-  "negative": "英文逗号分隔的负向标签",
+  "positive": "comma separated english tags",
+  "negative": "comma separated english tags",
   "reference_image_paths": []
 }
 """
@@ -19,15 +24,23 @@ SYSTEM = """
 
 async def run(llm: LLMEngine, payload: dict) -> dict:
     chars_info = "\n".join(
-        f"- {c['name']}: trigger={c.get('trigger_words', [])}, 外貌={c.get('appearance_summary', '')}"
+        f"- {c['name']}: trigger_words={c.get('trigger_words', [])}, appearance={c.get('appearance_summary', '')}"
         for c in payload.get("character_variants", [])
     )
+    story_context = payload.get("story_context", "")
+    scene_context = payload.get("scene_context", "")
+
     user_msg = f"""
-句区文本：{payload['zone_text']}
-情绪：{payload['emotion_primary']}（强度 {payload.get('emotion_intensity', 0.5)}）
-场景上下文：{payload.get('scene_context', '')}
-出现角色：
-{chars_info}
+## Full Story Context (for understanding the narrative background):
+{story_context or scene_context or "(no context provided)"}
+
+## Current Panel to Generate:
+- Scene text: {payload['zone_text']}
+- Primary emotion: {payload['emotion_primary']} (intensity: {payload.get('emotion_intensity', 0.5)})
+- Characters present:
+{chars_info or "  (no named characters in this panel)"}
+
+Generate a detailed, vivid Stable Diffusion prompt for this specific panel based on the full story context above.
 """
     return await llm.complete_json(
         [{"role": "user", "content": user_msg}],

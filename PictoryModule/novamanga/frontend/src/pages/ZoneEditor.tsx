@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { zonesAPI } from '../api/client'
+import { zonesAPI, tasksAPI } from '../api/client'
 import { useProjectStore } from '../stores/projectStore'
 
 interface Zone {
@@ -40,19 +40,26 @@ export default function ZoneEditor() {
     if (!current || !zid) return
     setGenPromptLoading(true)
     setTaskStatus('正在生成 Prompt...')
-    await zonesAPI.generatePrompt(zid, current.path)
+    const { task_id } = await zonesAPI.generatePrompt(zid, current.path)
     const poll = setInterval(async () => {
-      const z = await zonesAPI.get(zid, current.path)
-      if (z.prompt_positive) {
-        setPromptPos(z.prompt_positive)
-        setPromptNeg(z.prompt_negative || '')
-        setZone(z)
-        setGenPromptLoading(false)
-        setTaskStatus('Prompt 生成完成')
-        clearInterval(poll)
-      }
+      try {
+        const t = await tasksAPI.get(task_id, current.path)
+        if (t.status === 'completed') {
+          const z = await zonesAPI.get(zid, current.path)
+          setPromptPos(z.prompt_positive || '')
+          setPromptNeg(z.prompt_negative || '')
+          setZone(z)
+          setGenPromptLoading(false)
+          setTaskStatus('Prompt 生成完成')
+          clearInterval(poll)
+        } else if (t.status === 'failed') {
+          setGenPromptLoading(false)
+          setTaskStatus('生成失败: ' + (t.error_message || ''))
+          clearInterval(poll)
+        }
+      } catch {}
     }, 2000)
-    setTimeout(() => { clearInterval(poll); setGenPromptLoading(false) }, 30000)
+    setTimeout(() => { clearInterval(poll); setGenPromptLoading(false) }, 60000)
   }
 
   const generateImage = async () => {

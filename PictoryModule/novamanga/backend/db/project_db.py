@@ -167,6 +167,11 @@ def list_characters(project_path: str, project_id: str) -> list[dict]:
         )]
 
 
+def list_all_characters(project_path: str) -> list[dict]:
+    with get_conn(project_path) as conn:
+        return [dict(r) for r in conn.execute("SELECT * FROM characters")]
+
+
 def get_character(project_path: str, character_id: str) -> dict | None:
     with get_conn(project_path) as conn:
         row = conn.execute("SELECT * FROM characters WHERE id=?", [character_id]).fetchone()

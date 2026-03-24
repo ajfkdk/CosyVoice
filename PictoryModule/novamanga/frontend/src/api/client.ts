@@ -31,6 +31,11 @@ export const zonesAPI = {
     api.post(`/zones/${zid}/image/generate`, body, { params: { project_path: projectPath } }).then(r => r.data),
 }
 
+export const tasksAPI = {
+  get: (taskId: string, projectPath: string) =>
+    api.get(`/tasks/${taskId}`, { params: { project_path: projectPath } }).then(r => r.data),
+}
+
 export const charactersAPI = {
   list: (pid: string, projectPath: string) =>
     api.get(`/projects/${pid}/characters`, { params: { project_path: projectPath } }).then(r => r.data),
