@@ -100,5 +100,5 @@ class ReferenceImageManager:
         Path(output_path).parent.mkdir(parents=True, exist_ok=True)
         merged.save(output_path)
 
-        ref_hint = "【参考图说明】\n本图从上到下依次包含：" + "、".join(labels) + "。\n请严格参照各角色参考图中的人物外貌、发型、服装风格来绘制对应角色，上一场景参考用于保持构图和环境色调连贯。"
+        ref_hint = "【参考图说明】\n本图从上到下依次包含：" + "、".join(labels) + "。\n⚠️ 重要：参考图中的白色分隔条和文字标签（如"角色参考：XXX"）仅用于标注，不要画入最终插画中。请严格参照各角色参考图中的人物外貌、发型、服装风格来绘制对应角色，上一场景参考用于保持构图和环境色调连贯。"
         return output_path, ref_hint

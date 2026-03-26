@@ -8,7 +8,6 @@ from llm_engine import LLMEngine
 from text_splitter import split_novel
 from scene_describer import describe_scene
 from illustrator import Illustrator
-from reference_manager import ReferenceImageManager
 
 
 # ── 配置区（硬编码，先跑通流程）──────────────────────────────
@@ -158,18 +157,15 @@ def run_pipeline(novel_text: str):
     print("📖 小说自动配插画系统启动")
     print("=" * 50)
 
-    # Step 1: 初始化引擎 + 参考图管理器
+    # Step 1: 初始化引擎
     print("\n[1/3] 初始化 LLM 引擎...")
     llm = LLMEngine(model=LLM_MODEL, api_key=LLM_API_KEY)
     illustrator = Illustrator()
-    ref_mgr = ReferenceImageManager()
 
+    print("   ✅ 角色参考图配置：")
     for name, path in CHARACTER_IMAGES.items():
-        if os.path.exists(path):
-            ref_mgr.add_character(name, path)
-            print(f"   ✅ 角色参考图已加载：{name}")
-        else:
-            print(f"   ⚠️  角色参考图不存在，跳过：{path}")
+        status = "✅" if os.path.exists(path) else "⚠️ 不存在"
+        print(f"      {status} {name}: {path}")
 
     # Step 2: AI 语义切分
     print("\n[2/3] 正在对小说进行语义切分...")
@@ -182,6 +178,8 @@ def run_pipeline(novel_text: str):
     print(f"\n[3/3] 开始逐场景生成插画...")
     character_names = list(CHARACTER_IMAGES.keys())
     results = []
+    last_scene_path = None
+
     for scene in scenes:
         print(f"\n── 场景 {scene['index']}: {scene['scene_tag']} ──")
 
@@ -189,19 +187,21 @@ def run_pipeline(novel_text: str):
         active = _detect_active_characters(scene['text'], character_names)
         print(f"   检测到角色：{active if active else '无'}")
 
-        # 构建参考图（仅注入当前场景出现的角色 + 上一帧原始场景图）
-        ref_path, ref_hint = None, ""
-        if ref_mgr.has_any_reference():
-            ref_out = os.path.join(OUTPUT_DIR, f"ref_{scene['index']:02d}.png")
-            ref_path, ref_hint = ref_mgr.build_reference(
-                ref_out, active_characters=active if active else None
-            )
-            if ref_path:
-                print(f"   参考图已合并 → {ref_path}")
+        # 构建参考图列表（角色参考图 + 上一场景图）
+        ref_images = []
+        for name in active:
+            char_path = CHARACTER_IMAGES.get(name)
+            if char_path and os.path.exists(char_path):
+                ref_images.append(char_path)
 
-        # 生成场景描述（将参考图结构说明拼入 prompt）
+        if last_scene_path and os.path.exists(last_scene_path):
+            ref_images.append(last_scene_path)
+
+        print(f"   参考图数量：{len(ref_images)}")
+
+        # 生成场景描述
         print("   生成场景描述...")
-        description = describe_scene(llm, scene, GLOBAL_SETTINGS, ref_hint=ref_hint)
+        description = describe_scene(llm, scene, GLOBAL_SETTINGS)
         print(f"   描述预览: {description[:80]}...")
 
         # 保存描述文本
@@ -214,11 +214,11 @@ def run_pipeline(novel_text: str):
         # 调用 Nanobanana 绘图
         img_path = os.path.join(OUTPUT_DIR, f"scene_{scene['index']:02d}.png")
         print(f"   调用 Nanobanana 绘图 → {img_path}")
-        result_path = illustrator.draw(description, img_path, reference_image=ref_path)
+        result_path = illustrator.draw(description, img_path, reference_images=ref_images if ref_images else None)
 
-        # 更新上一帧为原始场景图（非合并参考图）
+        # 更新上一场景图
         if result_path:
-            ref_mgr.update_last_scene(result_path)
+            last_scene_path = result_path
 
         results.append({
             "index": scene['index'],
