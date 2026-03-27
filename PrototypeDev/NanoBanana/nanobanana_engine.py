@@ -5,9 +5,13 @@ from pathlib import Path
 
 NanoTOKEN='sk-Z09Qf00CSEme9kUy3Osfvt9UHpRttlEpOVCj6dwaMfmSidQm'
 APIURL="https://528ai.cc/v1/chat/completions"
+NANOMODEL="gemini-3.1-flash-image-preview"
+# NanoTOKEN='sk-jscqrhYiCx2JDdHYyLyWjApzVtFPhM4CcOTjzQ89sthUTxn7'
+# APIURL="https://api.mmw.ink/v1/chat/completions"
+
 class NanobananaEngine:
-    def __init__(self, model="gemini-3.1-flash-image-preview", token=NanoTOKEN):
-        self.api_url = "https://528ai.cc/v1/chat/completions"
+    def __init__(self, model=NANOMODEL, token=NanoTOKEN):
+        self.api_url = APIURL
         self.model = model
         self.token = token
 
@@ -48,7 +52,7 @@ class NanobananaEngine:
         }
 
         print("⏳ 生成中...")
-        resp = requests.post(self.api_url, headers=headers, json=payload, timeout=300)
+        resp = requests.post(self.api_url, headers=headers, json=payload, timeout=300, verify=False)
         resp.raise_for_status()
         result = resp.json()
 

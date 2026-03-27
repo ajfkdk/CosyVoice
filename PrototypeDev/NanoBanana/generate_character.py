@@ -11,4 +11,4 @@ prompt = """
 full_prompt = f"{prompt}\n\n"
 
 engine = NanobananaEngine()
-engine.generate(full_prompt, output_path="董建.png")
+engine.generate(full_prompt, output_path="../小说配插画/ref/董建.png")

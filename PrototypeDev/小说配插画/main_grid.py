@@ -11,17 +11,13 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'NanoBanana'))
 from llm_engine import LLMEngine
 from story_grid_generator import generate_story_prompt, split_story_scenes
 from nanobanana_engine import NanobananaEngine
+from grid_splitter import smart_split_grid
 
 # ── 配置 ──
-LLM_MODEL = "gpt-5.4"
-LLM_API_KEY = "sk-poe-MwMbiZG9uvGBVWCXo1XWl9ULEB9sT8OA7yv5VZjd_gI"
+LLM_MODEL = "gpt-5.4-mini"
+LLM_API_KEY = "sk-poe-0e4fhz3IYTMF_FIK_3yA_2ROHyYXRwrAal_-jWTTibE"
 OUTPUT_DIR = "output_grid"
-
-CHARACTER_IMAGES = {
-    "林知命": "output/林知命.png",
-    "姚静": "output/姚静.png",
-    "董建": "output/董建.png",
-}
+REF_DIR = "ref"  # 参考图目录
 
 GLOBAL_SETTINGS = {
     "character_card": """
@@ -166,17 +162,21 @@ def run_grid_pipeline(novel_text: str):
     print(f"✅ 连贯叙事prompt已生成 → {prompt_file}")
     print(f"\n预览：\n{story_prompt[:200]}...\n")
 
-    # Step 2: 收集角色参考图
+    # Step 2: 从ref文件夹收集参考图
     ref_images = []
-    for name, path in CHARACTER_IMAGES.items():
-        if os.path.exists(path):
-            ref_images.append(path)
-            print(f"✅ 角色参考图：{name}")
+    if os.path.exists(REF_DIR):
+        for filename in os.listdir(REF_DIR):
+            if filename.lower().endswith(('.png', '.jpg', '.jpeg')):
+                ref_path = os.path.join(REF_DIR, filename)
+                ref_images.append(ref_path)
+                print(f"✅ 参考图：{filename}")
+    else:
+        print(f"⚠️ 参考图目录不存在：{REF_DIR}")
 
     # Step 3: 生成16宫格图
     print(f"\n[2/3] 调用Gemini生成16宫格图...")
     print(f"   参考图数量：{len(ref_images)}")
-    print(f"   输出格式：16:9 @ 2K")
+    print(f"   输出格式：16:9 @ 1K")
 
     nano = NanobananaEngine()
     grid_output = os.path.join(OUTPUT_DIR, "story_grid_16.png")
@@ -186,18 +186,27 @@ def run_grid_pipeline(novel_text: str):
         input_image=ref_images if ref_images else None,
         output_path=grid_output,
         aspect_ratio="16:9",
-        image_size="2K"
+        image_size="1K"
     )
 
     if result:
         print(f"\n✅ 16宫格图生成成功 → {result}")
+
+        # Step 4: 自动裁剪16宫格
+        print(f"\n[3/3] 裁剪16宫格为独立场景...")
+        split_dir = os.path.join(OUTPUT_DIR, "scenes")
+        split_results = smart_split_grid(result, split_dir, rows=4, cols=4)
+        print(f"✅ 裁剪完成，共 {len(split_results)} 张图片 → {split_dir}/")
     else:
         print(f"\n❌ 生成失败")
+        split_results = []
 
     print("\n" + "=" * 60)
     print("✅ 完成！")
+    print(f"   16宫格大图: {result}")
+    print(f"   独立场景图: {len(split_results)} 张")
     print("=" * 60)
-    return result
+    return result, split_results
 
 
 if __name__ == "__main__":
