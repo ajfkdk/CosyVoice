@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(D:/Develop/Python312/python.exe -m pip uninstall lightning -y)",
+      "Bash(D:/Develop/Python312/python.exe -m pip install lightning)",
+      "Read(//c/Users/pc/PycharmProjects/TOOL/Pictory/**)",
+      "Bash(D:/Develop/Python312/python.exe cosyvoice3_demo.py)",
+      "Bash(D:/Develop/Python312/python.exe -m pip uninstall pyworld -y)",
+      "Bash(D:/Develop/Python312/python.exe -m pip install pyworld)",
+      "Bash(sed -i 's/🎯/[*]/g' cosyvoice3_demo.py)",
+      "Bash(sed -i 's/✅/[OK]/g' cosyvoice3_demo.py)"
+    ]
+  }
+}
