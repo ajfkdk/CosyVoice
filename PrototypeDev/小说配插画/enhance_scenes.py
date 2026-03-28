@@ -1,24 +1,24 @@
+
 """
-1Prompt1Story主流程 - 16宫格生成
-运行：python main_grid.py
+场景增强器 - 将16宫格裁剪的scene重新生成为高清版
+运行：python enhance_scenes.py
 """
 import os
 import sys
 import json
-from PIL import Image
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'NanoBanana'))
 
 from llm_engine import LLMEngine
-from story_grid_generator import generate_story_prompt
 from nanobanana_engine import NanobananaEngine
-from grid_splitter import smart_split_grid
 
 # ── 配置 ──
 LLM_MODEL = "gemini-3.1-flash-lite"
 LLM_API_KEY = "sk-poe-0e4fhz3IYTMF_FIK_3yA_2ROHyYXRwrAal_-jWTTibE"
 OUTPUT_DIR = "output_grid"
-REF_DIR = "ref"  # 参考图目录
+SCENES_DIR = os.path.join(OUTPUT_DIR, "scenes")
+HD_DIR = os.path.join(OUTPUT_DIR, "scenes_hd")
+MAPPING_FILE = os.path.join(OUTPUT_DIR, "scene_mapping.json")
 
 GLOBAL_SETTINGS = {
     "character_card": """
@@ -139,120 +139,153 @@ SAMPLE_NOVEL = """
 """
 
 
-def run_grid_pipeline(novel_text: str):
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
+def find_novel_segment(novel_text: str, novel_key: str) -> str:
+    """根据关键句在小说中查找对应段落（前后各100字）"""
+    if not novel_key:
+        return ""
+    
+    idx = novel_text.find(novel_key)
+    if idx == -1:
+        return ""
+    
+    start = max(0, idx - 100)
+    end = min(len(novel_text), idx + len(novel_key) + 100)
+    return novel_text[start:end].strip()
 
-    print("=" * 60)
-    print("📖 1Prompt1Story - 16宫格故事生成器")
-    print("=" * 60)
 
-    # Step 1: 生成连贯叙事prompt
-    print("\n[1/4] 分镜师正在提炼16个关键画面...")
+def generate_enhanced_prompt(llm: LLMEngine, scene_meta: dict, novel_segment: str,
+                             character_card: str, art_style: str) -> str:
+    """根据镜头类型生成增强prompt"""
+    shot_type = scene_meta["shot_type"]
+    description = scene_meta["description"]
+    
+    # 根据镜头类型调整prompt策略
+    if "特写" in shot_type:
+        focus = "面部细节、眼神、微表情，极简背景"
+    elif "过渡" in shot_type:
+        focus = "环境氛围、光影效果、空间感"
+    elif "留白" in shot_type:
+        focus = "安静时刻、情绪留白、克制表达"
+    else:
+        focus = "动作、场景、人物关系"
+    
+    system = f"""你是京都动画的插画师，擅长将场景描述转化为高质量插画prompt。
+
+镜头类型：{shot_type}
+重点强化：{focus}
+
+要求：
+- 保持人物形象一致性（参考角色卡）
+- 强化{focus}
+- 画面中不要出现任何文字、对话框
+- 输出简洁的视觉描述（50-80字）"""
+    
+    user = f"""【角色设定】
+{character_card}
+
+【美术风格】
+{art_style}
+
+【小说片段】
+{novel_segment}
+
+【原始场景描述】
+{description}
+
+请生成增强版插画prompt，强化{focus}。"""
+    
+    return llm.chat(user, system=system)
+
+
+def enhance_single_scene(scene_file: str, scene_meta: dict, novel_text: str):
+    """增强单个场景"""
+    print(f"\n处理 {scene_file}...")
+    print(f"  镜头类型: {scene_meta['shot_type']}")
+    print(f"  角色: {scene_meta['characters']}")
+    
+    # 1. 查找对应小说段落
+    novel_segment = find_novel_segment(novel_text, scene_meta["novel_key"])
+    if not novel_segment:
+        print(f"  ⚠️ 未找到对应小说段落，使用原始描述")
+        novel_segment = scene_meta["description"]
+    
+    # 2. 生成增强prompt
     llm = LLMEngine(model=LLM_MODEL, api_key=LLM_API_KEY)
-
-    story_prompt, scenes_json = generate_story_prompt(
-        llm, novel_text,
+    enhanced_prompt = generate_enhanced_prompt(
+        llm, scene_meta, novel_segment,
         GLOBAL_SETTINGS["character_card"],
         GLOBAL_SETTINGS["art_style"]
     )
-
-    # 保存LLM原始JSON输出
-    json_file = os.path.join(OUTPUT_DIR, "scenes_raw.json")
-    with open(json_file, "w", encoding="utf-8") as f:
-        json.dump(scenes_json, f, ensure_ascii=False, indent=2)
-    print(f"✅ 原始JSON已保存 → {json_file}")
-
-    # 保存最终prompt（发给Nanobanana的完整版本）
-    final_prompt_file = os.path.join(OUTPUT_DIR, "final_prompt.txt")
-    with open(final_prompt_file, "w", encoding="utf-8") as f:
-        f.write(story_prompt)
-    print(f"✅ 最终prompt已保存 → {final_prompt_file}")
-    print(f"\n预览：\n{story_prompt[:200]}...\n")
-
-    # Step 2: 从ref文件夹收集参考图
-    ref_images = []
-    if os.path.exists(REF_DIR):
-        for filename in os.listdir(REF_DIR):
-            if filename.lower().endswith(('.png', '.jpg', '.jpeg')):
-                ref_path = os.path.join(REF_DIR, filename)
-                ref_images.append(ref_path)
-                print(f"✅ 参考图：{filename}")
-    else:
-        print(f"⚠️ 参考图目录不存在：{REF_DIR}")
-
-    # Step 3: 生成16宫格图
-    print(f"\n[2/4] 调用Gemini生成16宫格图...")
-    print(f"   参考图数量：{len(ref_images)}")
-    print(f"   输出格式：16:9 @ 1K")
-
+    
+    print(f"  增强prompt: {enhanced_prompt[:60]}...")
+    
+    # 3. 使用原scene作为参考图生成高清版
+    scene_path = os.path.join(SCENES_DIR, scene_file)
+    hd_path = os.path.join(HD_DIR, scene_file)
+    
     nano = NanobananaEngine()
-    grid_output = os.path.join(OUTPUT_DIR, "story_grid_16.png")
-
     result = nano.generate(
-        prompt=story_prompt,
-        input_image=ref_images if ref_images else None,
-        output_path=grid_output,
+        prompt=enhanced_prompt,
+        input_image=[scene_path],
+        output_path=hd_path,
         aspect_ratio="16:9",
-        image_size="1K"
+        image_size="2K"
     )
-
+    
     if result:
-        print(f"\n✅ 16宫格图生成成功 → {result}")
-
-        # Step 4: 自动裁剪16宫格
-        print(f"\n[3/4] 裁剪16宫格为独立场景...")
-        split_dir = os.path.join(OUTPUT_DIR, "scenes")
-        split_results = smart_split_grid(result, split_dir, rows=4, cols=4)
-        print(f"✅ 裁剪完成，共 {len(split_results)} 张图片 → {split_dir}/")
-
-        # Step 5: 保存场景映射文件（添加origin_text）
-        print(f"\n[4/4] 保存场景映射文件...")
-
-        def extract_novel_segment(novel_text: str, start_key: str, end_key: str) -> str:
-            """根据起止关键句提取完整小说段落"""
-            if not start_key or not end_key:
-                return ""
-
-            start_idx = novel_text.find(start_key)
-            end_idx = novel_text.find(end_key)
-
-            if start_idx == -1 or end_idx == -1:
-                return ""
-
-            # 提取从start_key到end_key结束的完整段落
-            end_idx = end_idx + len(end_key)
-            return novel_text[start_idx:end_idx].strip()
-
-        mapping = {}
-        for i, scene in enumerate(scenes_json):
-            scene_file = f"scene_{i+1:02d}.png"
-            origin_text = extract_novel_segment(novel_text, scene["novel_start"], scene["novel_end"])
-            mapping[scene_file] = {
-                "scene_id": scene["scene_id"],
-                "characters": scene["characters"],
-                "shot_type": scene["shot_type"],
-                "novel_start": scene["novel_start"],
-                "novel_end": scene["novel_end"],
-                "origin_text": origin_text,
-                "description": scene["description"]
-            }
-
-        mapping_file = os.path.join(OUTPUT_DIR, "scene_mapping.json")
-        with open(mapping_file, "w", encoding="utf-8") as f:
-            json.dump(mapping, f, ensure_ascii=False, indent=2)
-        print(f"✅ 映射文件已保存 → {mapping_file}")
+        print(f"  ✅ 生成成功 → {result}")
+        
+        # 保存prompt
+        prompt_file = hd_path.replace(".png", "_prompt.txt")
+        with open(prompt_file, "w", encoding="utf-8") as f:
+            f.write(enhanced_prompt)
     else:
-        print(f"\n❌ 生成失败")
-        split_results = []
+        print(f"  ❌ 生成失败")
+    
+    return result
 
-    print("\n" + "=" * 60)
-    print("✅ 完成！")
-    print(f"   16宫格大图: {result}")
-    print(f"   独立场景图: {len(split_results)} 张")
+
+def run_enhancement(test_scene: str = None):
+    """运行增强流程"""
+    os.makedirs(HD_DIR, exist_ok=True)
+    
     print("=" * 60)
-    return result, split_results
+    print("🎨 场景增强器 - Scene Enhancer")
+    print("=" * 60)
+    
+    # 加载映射文件
+    if not os.path.exists(MAPPING_FILE):
+        print(f"❌ 映射文件不存在: {MAPPING_FILE}")
+        print("请先运行 python main_grid.py 生成16宫格")
+        return
+    
+    with open(MAPPING_FILE, "r", encoding="utf-8") as f:
+        mapping = json.load(f)
+    
+    print(f"\n✅ 加载映射文件: {len(mapping)} 个场景")
+    
+    # 测试模式：只处理指定场景
+    if test_scene:
+        if test_scene not in mapping:
+            print(f"❌ 场景不存在: {test_scene}")
+            return
+        
+        print(f"\n🧪 测试模式：只处理 {test_scene}")
+        enhance_single_scene(test_scene, mapping[test_scene], SAMPLE_NOVEL)
+    else:
+        # 批量处理所有场景
+        print(f"\n开始批量处理...")
+        success = 0
+        for scene_file, meta in mapping.items():
+            result = enhance_single_scene(scene_file, meta, SAMPLE_NOVEL)
+            if result:
+                success += 1
+        
+        print("\n" + "=" * 60)
+        print(f"✅ 完成！成功: {success}/{len(mapping)}")
+        print("=" * 60)
 
 
 if __name__ == "__main__":
-    run_grid_pipeline(SAMPLE_NOVEL)
-
+    # 测试模式：只处理第一个场景
+    run_enhancement(test_scene="scene_01.png")

@@ -1,0 +1,130 @@
+[
+  {
+    "scene_id": 1,
+    "characters": "林知命",
+    "shot_type": "事件格",
+    "novel_start": "夜色已深",
+    "novel_end": "面无表情的西装大汉",
+    "description": "昏暗仓库内，三个男人被吊在天花板下，浑身伤痕，林知命坐在正前方，脸色冷漠。"
+  },
+  {
+    "scene_id": 2,
+    "characters": "林知命",
+    "shot_type": "特写格",
+    "novel_start": "林知命有些无奈",
+    "novel_end": "不相符的成熟感",
+    "description": "特写林知命的眼睛，冷漠中带着威严，眼神深邃，展现出与年龄不符的成熟。"
+  },
+  {
+    "scene_id": 3,
+    "characters": "林知命",
+    "shot_type": "事件格",
+    "novel_start": "那就把骨头打断吧",
+    "novel_end": "往那三个人身上招呼",
+    "description": "林知命微笑着挥手，西装大汉拿着家伙，开始往那三个被吊着的人身上招呼。"
+  },
+  {
+    "scene_id": 4,
+    "characters": "无",
+    "shot_type": "过渡格",
+    "novel_start": "地面上早充斥着",
+    "novel_end": "喷溅状的血迹",
+    "description": "水泥地面上，喷溅状的血迹在昏暗灯光下显得触目惊心，没有任何人物，只有血迹。"
+  },
+  {
+    "scene_id": 5,
+    "characters": "林知命",
+    "shot_type": "事件格",
+    "novel_start": "林知命脸色平静",
+    "novel_end": "然后点燃",
+    "description": "林知命抬起右手，伸出中指食指，董建熟练地将烟放到他指间并点燃。"
+  },
+  {
+    "scene_id": 6,
+    "characters": "林知命",
+    "shot_type": "特写格",
+    "novel_start": "这世界最好听的歌曲",
+    "novel_end": "仇人的悲鸣",
+    "description": "特写林知命嘴唇，吐出一口烟雾，神情平静，强调他此刻那种令人不寒而栗的冷漠。"
+  },
+  {
+    "scene_id": 7,
+    "characters": "林知命",
+    "shot_type": "过渡格",
+    "novel_start": "林知命一根烟",
+    "novel_end": "出不了大牢了吧",
+    "description": "林知命将烟头掐灭在烟灰缸里，指尖用力，特写掐灭的动作，暗示对林知行的决绝。"
+  },
+  {
+    "scene_id": 8,
+    "characters": "林知命",
+    "shot_type": "事件格",
+    "novel_start": "让一个人最痛苦的事情",
+    "novel_end": "生不如死",
+    "description": "林知命靠在椅子上，语气平静地诉说着要让大哥生不如死的残酷计划。"
+  },
+  {
+    "scene_id": 9,
+    "characters": "林知命",
+    "shot_type": "特写格",
+    "novel_start": "双眼之中爆发出",
+    "novel_end": "恐怖的杀意",
+    "description": "特写林知命的眼睛，瞳孔紧缩，爆发出恐怖的杀意，背景完全虚化。"
+  },
+  {
+    "scene_id": 10,
+    "characters": "林知命",
+    "shot_type": "过渡格",
+    "novel_start": "叮铃铃",
+    "novel_end": "杀意瞬间消散",
+    "description": "仓库外，夜风吹动仓库铁门，林知命拿着手机，背影在阴影中显得孤寂。"
+  },
+  {
+    "scene_id": 11,
+    "characters": "林知命",
+    "shot_type": "事件格",
+    "novel_start": "喂，静静",
+    "novel_end": "马上回去",
+    "description": "林知命拿着手机，对着话筒声音温柔，与刚才的杀意判若两人。"
+  },
+  {
+    "scene_id": 12,
+    "characters": "姚静",
+    "shot_type": "留白格",
+    "novel_start": "海峡市景苑小区",
+    "novel_end": "敲打着什么",
+    "description": "客厅内，姚静坐在沙发上，电脑屏幕的光映照在脸上，神情平静，环境安静。"
+  },
+  {
+    "scene_id": 13,
+    "characters": "姚静",
+    "shot_type": "特写格",
+    "novel_start": "薄薄的嘴唇",
+    "novel_end": "亲上一口",
+    "description": "特写姚静的侧脸与红润的嘴唇，不染唇彩，在居家灯光下显得异常安静。"
+  },
+  {
+    "scene_id": 14,
+    "characters": "林知命, 姚静",
+    "shot_type": "事件格",
+    "novel_start": "林知命走到姚静的身边",
+    "novel_end": "不会影响到你的",
+    "description": "林知命坐在姚静身边，小心翼翼地提出离婚，姚静依旧盯着电脑屏幕。"
+  },
+  {
+    "scene_id": 15,
+    "characters": "姚静",
+    "shot_type": "事件格",
+    "novel_start": "我姚静一天是你的妻子",
+    "novel_end": "也不会离婚的",
+    "description": "姚静停下敲击键盘的手，平静地转头看向林知命，眼神坚定，拒绝离婚。"
+  },
+  {
+    "scene_id": 16,
+    "characters": "林知命",
+    "shot_type": "留白格",
+    "novel_start": "林知命看了一眼姚静",
+    "novel_end": "走回房间",
+    "description": "客厅只剩下姚静的背影，林知命起身走向房间，画面留白，充满压抑的静谧。"
+  }
+]
