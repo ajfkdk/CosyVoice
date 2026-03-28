@@ -5,9 +5,11 @@ from pathlib import Path
 
 NanoTOKEN='sk-Z09Qf00CSEme9kUy3Osfvt9UHpRttlEpOVCj6dwaMfmSidQm'
 APIURL="https://528ai.cc/v1/chat/completions"
-NANOMODEL="gemini-3.1-flash-image-preview"
+NANOMODEL="gemini-2.5-flash-image"
+
 # NanoTOKEN='sk-jscqrhYiCx2JDdHYyLyWjApzVtFPhM4CcOTjzQ89sthUTxn7'
 # APIURL="https://api.mmw.ink/v1/chat/completions"
+# NANOMODEL="[A]gemini-3-pro-image-preview"
 
 class NanobananaEngine:
     def __init__(self, model=NANOMODEL, token=NanoTOKEN):

@@ -139,90 +139,81 @@ SAMPLE_NOVEL = """
 """
 
 
-def find_novel_segment(novel_text: str, novel_key: str) -> str:
-    """根据关键句在小说中查找对应段落（前后各100字）"""
-    if not novel_key:
-        return ""
-    
-    idx = novel_text.find(novel_key)
-    if idx == -1:
-        return ""
-    
-    start = max(0, idx - 100)
-    end = min(len(novel_text), idx + len(novel_key) + 100)
-    return novel_text[start:end].strip()
-
-
-def generate_enhanced_prompt(llm: LLMEngine, scene_meta: dict, novel_segment: str,
+def generate_enhanced_prompt(llm: LLMEngine, scene_meta: dict,
                              character_card: str, art_style: str) -> str:
     """根据镜头类型生成增强prompt"""
     shot_type = scene_meta["shot_type"]
     description = scene_meta["description"]
-    
+    origin_text = scene_meta["origin_text"]
+
     # 根据镜头类型调整prompt策略
     if "特写" in shot_type:
-        focus = "面部细节、眼神、微表情，极简背景"
+        focus = "面部细节、眼神、微表情"
     elif "过渡" in shot_type:
-        focus = "环境氛围、光影效果、空间感"
+        focus = "环境氛围、光影效果"
     elif "留白" in shot_type:
-        focus = "安静时刻、情绪留白、克制表达"
+        focus = "情绪留白、克制表达"
     else:
-        focus = "动作、场景、人物关系"
-    
-    system = f"""你是京都动画的插画师，擅长将场景描述转化为高质量插画prompt。
+        focus = "动作细节、场景细节"
+
+    system = f"""你是京都动画的插画修复师，擅长在保持原图基础上补充细节和修正错误。
+
+⚠️ 核心原则：
+1. 严格保持参考图的构图、人物姿态、画风、色调
+2. 只补充小说原文中存在但参考图缺失的细节
+3. 修正参考图中与原文不符的部分（如添加了原文没有的道具）
+4. 不改变整体画面结构，只做细节优化
 
 镜头类型：{shot_type}
-重点强化：{focus}
+重点强化：{focus}"""
 
-要求：
-- 保持人物形象一致性（参考角色卡）
-- 强化{focus}
-- 画面中不要出现任何文字、对话框
-- 输出简洁的视觉描述（50-80字）"""
-    
-    user = f"""【角色设定】
+    user = f"""【参考图说明】
+参考图是已生成的插画，需要在其基础上进行细节补充和修正。
+
+【角色设定】
 {character_card}
 
 【美术风格】
 {art_style}
 
-【小说片段】
-{novel_segment}
+【小说原文】
+{origin_text}
 
-【原始场景描述】
+【当前场景描述】
 {description}
 
-请生成增强版插画prompt，强化{focus}。"""
-    
+【修复任务】
+1. 对比参考图和小说原文，找出缺失或不符的细节
+2. 保持参考图的构图、人物姿态、画风完全一致
+3. 只补充原文中存在但图中缺失的细节
+4. 移除图中存在但原文没有的元素
+5. 强化{focus}
+
+输出增强后的插画prompt（50-80字），强调保持原图一致性。"""
+
     return llm.chat(user, system=system)
 
 
-def enhance_single_scene(scene_file: str, scene_meta: dict, novel_text: str):
+def enhance_single_scene(scene_file: str, scene_meta: dict):
     """增强单个场景"""
     print(f"\n处理 {scene_file}...")
     print(f"  镜头类型: {scene_meta['shot_type']}")
     print(f"  角色: {scene_meta['characters']}")
-    
-    # 1. 查找对应小说段落
-    novel_segment = find_novel_segment(novel_text, scene_meta["novel_key"])
-    if not novel_segment:
-        print(f"  ⚠️ 未找到对应小说段落，使用原始描述")
-        novel_segment = scene_meta["description"]
-    
-    # 2. 生成增强prompt
+
+    # 生成增强prompt
     llm = LLMEngine(model=LLM_MODEL, api_key=LLM_API_KEY)
     enhanced_prompt = generate_enhanced_prompt(
-        llm, scene_meta, novel_segment,
+        llm, scene_meta,
         GLOBAL_SETTINGS["character_card"],
         GLOBAL_SETTINGS["art_style"]
     )
-    
+
     print(f"  增强prompt: {enhanced_prompt[:60]}...")
-    
-    # 3. 使用原scene作为参考图生成高清版
+
+    # 使用原scene作为参考图生成高清版
     scene_path = os.path.join(SCENES_DIR, scene_file)
     hd_path = os.path.join(HD_DIR, scene_file)
-    
+
     nano = NanobananaEngine()
     result = nano.generate(
         prompt=enhanced_prompt,
@@ -231,58 +222,62 @@ def enhance_single_scene(scene_file: str, scene_meta: dict, novel_text: str):
         aspect_ratio="16:9",
         image_size="2K"
     )
-    
+
     if result:
         print(f"  ✅ 生成成功 → {result}")
-        
+
         # 保存prompt
         prompt_file = hd_path.replace(".png", "_prompt.txt")
         with open(prompt_file, "w", encoding="utf-8") as f:
             f.write(enhanced_prompt)
     else:
         print(f"  ❌ 生成失败")
-    
+
     return result
 
 
 def run_enhancement(test_scene: str = None):
     """运行增强流程"""
     os.makedirs(HD_DIR, exist_ok=True)
-    
+
     print("=" * 60)
     print("🎨 场景增强器 - Scene Enhancer")
     print("=" * 60)
-    
+
     # 加载映射文件
     if not os.path.exists(MAPPING_FILE):
         print(f"❌ 映射文件不存在: {MAPPING_FILE}")
         print("请先运行 python main_grid.py 生成16宫格")
         return
-    
+
     with open(MAPPING_FILE, "r", encoding="utf-8") as f:
         mapping = json.load(f)
-    
+
     print(f"\n✅ 加载映射文件: {len(mapping)} 个场景")
-    
+
     # 测试模式：只处理指定场景
     if test_scene:
         if test_scene not in mapping:
             print(f"❌ 场景不存在: {test_scene}")
             return
-        
+
         print(f"\n🧪 测试模式：只处理 {test_scene}")
-        enhance_single_scene(test_scene, mapping[test_scene], SAMPLE_NOVEL)
+        enhance_single_scene(test_scene, mapping[test_scene])
     else:
-        # 批量处理所有场景
-        print(f"\n开始批量处理...")
+        # 批量处理所有场景（限制前2个）
+        print(f"\n开始批量处理（前2个场景）...")
         success = 0
+        count = 0
         for scene_file, meta in mapping.items():
-            result = enhance_single_scene(scene_file, meta, SAMPLE_NOVEL)
+            if count >= 2:
+                break
+            result = enhance_single_scene(scene_file, meta)
             if result:
                 success += 1
-        
+            count += 1
+
         print("\n" + "=" * 60)
-        print(f"✅ 完成！成功: {success}/{len(mapping)}")
+        print(f"✅ 完成！成功: {success}/{count}")
         print("=" * 60)
 
 
