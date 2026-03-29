@@ -1,0 +1,178 @@
+[
+  {
+    "scene_id": 1,
+    "characters": "环境",
+    "shot_type": "留白格",
+    "novel_start": "又是一个白云蓝天",
+    "novel_end": "都无比明媚的早晨",
+    "description": "清晨的阳光透过落地窗洒进客厅，明亮通透，京都动画式的高光处理，空气中微尘浮动。",
+    "action_subject": null,
+    "action_verb": null,
+    "action_target": null
+  },
+  {
+    "scene_id": 2,
+    "characters": "林知命",
+    "shot_type": "事件格",
+    "novel_start": "早上八点",
+    "novel_end": "从自己的房间里走了出来",
+    "description": "林知命穿着居家服走出卧室，神情平静，光影勾勒出他挺拔的轮廓。",
+    "action_subject": "林知命",
+    "action_verb": "走出",
+    "action_target": "房间"
+  },
+  {
+    "scene_id": 3,
+    "characters": "无",
+    "shot_type": "过渡格",
+    "novel_start": "厨房的餐桌上",
+    "novel_end": "一如既往的放着燕麦粥",
+    "description": "特写餐桌，摆放整齐的燕麦粥、荷包蛋、吐司，热气腾腾，色彩饱和温暖。",
+    "action_subject": null,
+    "action_verb": null,
+    "action_target": null
+  },
+  {
+    "scene_id": 4,
+    "characters": "林知命",
+    "shot_type": "事件格",
+    "novel_start": "林知命认真的",
+    "novel_end": "把所有东西都吃完",
+    "description": "林知命坐在桌前安静用餐，动作优雅克制，京都动画式的细腻吃饭特写。",
+    "action_subject": "林知命",
+    "action_verb": "吃",
+    "action_target": "早餐"
+  },
+  {
+    "scene_id": 5,
+    "characters": "林知命",
+    "shot_type": "事件格",
+    "novel_start": "把碗筷",
+    "novel_end": "洗好",
+    "description": "林知命站在水槽前洗碗，袖口微卷，背影显得居家而沉稳。",
+    "action_subject": "林知命",
+    "action_verb": "清洗",
+    "action_target": "碗筷"
+  },
+  {
+    "scene_id": 6,
+    "characters": "林知命",
+    "shot_type": "特写格",
+    "novel_start": "手机响了起来",
+    "novel_end": "按下了免提键",
+    "description": "特写林知命的手指按下手机免提，眼神在这一刻变得深邃，透出一丝冷意。",
+    "action_subject": "林知命",
+    "action_verb": "按下",
+    "action_target": "手机免提键"
+  },
+  {
+    "scene_id": 7,
+    "characters": "林知命",
+    "shot_type": "事件格",
+    "novel_start": "刚打算去公司呢",
+    "novel_end": "唯唯诺诺说道",
+    "description": "林知命对着手机，表情瞬间切换成懦弱顺从，演技精湛。",
+    "action_subject": "林知命",
+    "action_verb": "回答",
+    "action_target": "电话那头的人"
+  },
+  {
+    "scene_id": 8,
+    "characters": "林知命",
+    "shot_type": "特写格",
+    "novel_start": "嘴角微微翘起",
+    "novel_end": "开始进攻了",
+    "description": "林知命挂断电话，原本懦弱的表情瞬间消失，嘴角勾起一抹冷酷的弧度，眼神犀利。",
+    "action_subject": "林知命",
+    "action_verb": "露出",
+    "action_target": "冷酷笑容"
+  },
+  {
+    "scene_id": 9,
+    "characters": "环境",
+    "shot_type": "过渡格",
+    "novel_start": "海峡市商圈",
+    "novel_end": "天骄集团大楼",
+    "description": "俯瞰视角，现代化的玻璃幕墙大楼在阳光下反射出冷冽的金属光泽。",
+    "action_subject": null,
+    "action_verb": null,
+    "action_target": null
+  },
+  {
+    "scene_id": 10,
+    "characters": "姚静",
+    "shot_type": "过渡格",
+    "novel_start": "穿着一身OL制服",
+    "novel_end": "坐在自己的办公室内",
+    "description": "姚静坐在宽大的办公桌后，身姿挺拔，长发披肩，气质干练冷艳。",
+    "action_subject": null,
+    "action_verb": null,
+    "action_target": null
+  },
+  {
+    "scene_id": 11,
+    "characters": "姚静, 高管",
+    "shot_type": "事件格",
+    "novel_start": "几个颤颤巍巍的",
+    "novel_end": "天骄集团高管",
+    "description": "几个高管低头站在办公桌前，额头冒汗，不敢直视姚静。",
+    "action_subject": "高管们",
+    "action_verb": "站立",
+    "action_target": "姚静面前"
+  },
+  {
+    "scene_id": 12,
+    "characters": "姚静",
+    "shot_type": "特写格",
+    "novel_start": "姚静的手中",
+    "novel_end": "拿着一份文件",
+    "description": "特写姚静的手指按在财报文件上，指节分明，透着压迫感。",
+    "action_subject": "姚静",
+    "action_verb": "拿着",
+    "action_target": "财报文件"
+  },
+  {
+    "scene_id": 13,
+    "characters": "姚静",
+    "shot_type": "事件格",
+    "novel_start": "面无表情的",
+    "novel_end": "问道",
+    "description": "姚静抬头看向高管，眼神如刀，气场全开，压迫感十足。",
+    "action_subject": "姚静",
+    "action_verb": "质问",
+    "action_target": "高管们"
+  },
+  {
+    "scene_id": 14,
+    "characters": "姚静",
+    "shot_type": "事件格",
+    "novel_start": "将财报",
+    "novel_end": "扔到了桌子上",
+    "description": "姚静将文件重重甩在桌上，动作干脆利落，显示出内心的愤怒。",
+    "action_subject": "姚静",
+    "action_verb": "扔",
+    "action_target": "财报"
+  },
+  {
+    "scene_id": 15,
+    "characters": "姚静",
+    "shot_type": "特写格",
+    "novel_start": "无奈的",
+    "novel_end": "叹了口气",
+    "description": "特写姚静的侧脸，眉头微蹙，眼神中流露出一丝疲惫与无奈。",
+    "action_subject": "姚静",
+    "action_verb": "叹气",
+    "action_target": "无"
+  },
+  {
+    "scene_id": 16,
+    "characters": "姚静, 高管",
+    "shot_type": "留白格",
+    "novel_start": "摆了摆手",
+    "novel_end": "转身离去",
+    "description": "姚静背对着高管挥手，窗外光影斑驳，整个办公室显得空旷而清冷。",
+    "action_subject": "姚静",
+    "action_verb": "挥手",
+    "action_target": "高管们"
+  }
+]

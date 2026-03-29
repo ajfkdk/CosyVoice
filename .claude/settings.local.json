@@ -7,7 +7,11 @@
       "Bash(python -u main_grid.py)",
       "Bash(iconv -f gbk -t utf-8)",
       "Bash(python test_grid.py)",
-      "Bash(python -c \"import json; data=json.load\\(open\\(''test_scenes.json'', encoding=''utf-8''\\)\\); [print\\(f''\\\\n场景{s[\"\"scene_id\"\"]}: {s[\"\"shot_type\"\"]}\\\\n描述: {s[\"\"description\"\"]}\\\\n主体: {s.get\\(\"\"action_subject\"\"\\)}\\\\n动作: {s.get\\(\"\"action_verb\"\"\\)}\\\\n对象: {s.get\\(\"\"action_target\"\"\\)}''\\) for s in data[8:12]]\")"
+      "Bash(python -c \"import json; data=json.load\\(open\\(''test_scenes.json'', encoding=''utf-8''\\)\\); [print\\(f''\\\\n场景{s[\"\"scene_id\"\"]}: {s[\"\"shot_type\"\"]}\\\\n描述: {s[\"\"description\"\"]}\\\\n主体: {s.get\\(\"\"action_subject\"\"\\)}\\\\n动作: {s.get\\(\"\"action_verb\"\"\\)}\\\\n对象: {s.get\\(\"\"action_target\"\"\\)}''\\) for s in data[8:12]]\")",
+      "Bash(\"C:\\\\Users\\\\pc\\\\PycharmProjects\\\\TOOL\\\\Pictory\\\\Prototype2\\\\llm_engine.py\":*)",
+      "Bash(\"C:\\\\Users\\\\pc\\\\PycharmProjects\\\\TOOL\\\\Pictory\\\\Prototype2\\\\grid_splitter.py\":*)",
+      "Bash(\"C:\\\\Users\\\\pc\\\\PycharmProjects\\\\TOOL\\\\Pictory\\\\Prototype2\\\\README.md\":*)",
+      "Bash(python main.py)"
     ]
   },
   "enabledPlugins": {
