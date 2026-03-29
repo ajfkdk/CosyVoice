@@ -1,0 +1,178 @@
+[
+  {
+    "scene_id": 1,
+    "characters": "无",
+    "shot_type": "留白格",
+    "novel_start": "夜色已深",
+    "novel_end": "仓库中传出",
+    "description": "深沉夜色下的海峡市郊区仓库，冷月光透过破旧窗户洒在地面，寂静压抑",
+    "action_subject": null,
+    "action_verb": null,
+    "action_target": null
+  },
+  {
+    "scene_id": 2,
+    "characters": "三个男人",
+    "shot_type": "事件格",
+    "novel_start": "阵阵惨叫声",
+    "novel_end": "浑身伤痕",
+    "description": "三个男人被绳索捆绑双手，悬吊在天花板下，身体因痛苦而扭曲，浑身伤痕",
+    "action_subject": "三个男人",
+    "action_verb": "惨叫",
+    "action_target": "无"
+  },
+  {
+    "scene_id": 3,
+    "characters": "西装大汉",
+    "shot_type": "过渡格",
+    "novel_start": "在他们的边上",
+    "novel_end": "西装大汉",
+    "description": "仓库昏暗角落，几个面无表情的西装大汉伫立，阴影遮住大半张脸",
+    "action_subject": null,
+    "action_verb": null,
+    "action_target": null
+  },
+  {
+    "scene_id": 4,
+    "characters": "三个男人",
+    "shot_type": "事件格",
+    "novel_start": "我招",
+    "novel_end": "大少爷安排的",
+    "description": "被吊男人神情惊恐，对着正前方苦苦哀求，身体因绝望而颤抖",
+    "action_subject": "被吊男人",
+    "action_verb": "哀求",
+    "action_target": "林知命"
+  },
+  {
+    "scene_id": 5,
+    "characters": "林知命",
+    "shot_type": "特写格",
+    "novel_start": "林知命",
+    "novel_end": "威严",
+    "description": "特写林知命的眼睛，眼神深邃且带有杀意，冷漠中透着一种与年纪不符的威严",
+    "action_subject": null,
+    "action_verb": null,
+    "action_target": null
+  },
+  {
+    "scene_id": 6,
+    "characters": "林知命",
+    "shot_type": "事件格",
+    "novel_start": "为什么非要我动粗",
+    "novel_end": "无奈的说道",
+    "description": "林知命坐在正前方椅子上，翘着二郎腿，神情无奈地看着被吊的三人",
+    "action_subject": "林知命",
+    "action_verb": "询问",
+    "action_target": "三个被吊的人"
+  },
+  {
+    "scene_id": 7,
+    "characters": "林知命",
+    "shot_type": "过渡格",
+    "novel_start": "年纪二十八",
+    "novel_end": "成熟感",
+    "description": "林知命的侧影，挺拔的身姿在昏暗光线下显得成熟而冷硬",
+    "action_subject": null,
+    "action_verb": null,
+    "action_target": null
+  },
+  {
+    "scene_id": 8,
+    "characters": "三个男人",
+    "shot_type": "特写格",
+    "novel_start": "颠覆面前三人的认知",
+    "novel_end": "软蛋",
+    "description": "特写被吊男人的脸部，瞳孔放大，满是难以置信的恐惧，彻底推翻了对林知命懦弱的认知",
+    "action_subject": null,
+    "action_verb": null,
+    "action_target": null
+  },
+  {
+    "scene_id": 9,
+    "characters": "林知命",
+    "shot_type": "事件格",
+    "novel_start": "亲手将他的大哥",
+    "novel_end": "送进了大牢",
+    "description": "林知命缓缓抬起手，整理了一下西装袖口，动作从容，背景是风雨飘摇的林氏集团幻影",
+    "action_subject": "林知命",
+    "action_verb": "整理袖口",
+    "action_target": "无"
+  },
+  {
+    "scene_id": 10,
+    "characters": "董建",
+    "shot_type": "事件格",
+    "novel_start": "人都是贱骨头",
+    "novel_end": "中年人说道",
+    "description": "董建站在林知命身旁，面相沉稳，冷冷地看着被吊的三人",
+    "action_subject": "董建",
+    "action_verb": "评价",
+    "action_target": "三个被吊的人"
+  },
+  {
+    "scene_id": 11,
+    "characters": "无",
+    "shot_type": "留白格",
+    "novel_start": "董建",
+    "novel_end": "狠毒",
+    "description": "仓库内悬挂的灯泡摇晃，光影在地面不断拉长，寂静中透着危险",
+    "action_subject": null,
+    "action_verb": null,
+    "action_target": null
+  },
+  {
+    "scene_id": 12,
+    "characters": "被吊男人",
+    "shot_type": "事件格",
+    "novel_start": "董建，你好狠毒",
+    "novel_end": "激动的叫道",
+    "description": "其中一个男人面目狰狞，对着董建怒吼，青筋暴起",
+    "action_subject": "被吊男人",
+    "action_verb": "怒吼",
+    "action_target": "董建"
+  },
+  {
+    "scene_id": 13,
+    "characters": "林知命",
+    "shot_type": "特写格",
+    "novel_start": "那就把骨头打断吧",
+    "novel_end": "微笑着说道",
+    "description": "特写林知命的嘴角，微微上扬，带着一丝残忍的微笑",
+    "action_subject": null,
+    "action_verb": null,
+    "action_target": null
+  },
+  {
+    "scene_id": 14,
+    "characters": "西装大汉",
+    "shot_type": "事件格",
+    "novel_start": "几个西装大汉",
+    "novel_end": "拿起了家伙",
+    "description": "几个西装大汉面无表情地从桌上拿起器械，走向被吊的三人",
+    "action_subject": "西装大汉",
+    "action_verb": "拿起器械",
+    "action_target": "器械"
+  },
+  {
+    "scene_id": 15,
+    "characters": "无",
+    "shot_type": "过渡格",
+    "novel_start": "开始往那三个人身上招呼",
+    "novel_end": "招呼",
+    "description": "仓库墙壁上投射出几个人影交错的影子，动作模糊而压抑",
+    "action_subject": null,
+    "action_verb": null,
+    "action_target": null
+  },
+  {
+    "scene_id": 16,
+    "characters": "林知命",
+    "shot_type": "留白格",
+    "novel_start": "更有价值的东西",
+    "novel_end": "更有价值的东西",
+    "description": "林知命背对着施暴现场，独自一人站在阴影中，背影挺拔冷漠",
+    "action_subject": null,
+    "action_verb": null,
+    "action_target": null
+  }
+]

@@ -19,6 +19,14 @@ OUTPUT_DIR = "output_grid"
 SCENES_DIR = os.path.join(OUTPUT_DIR, "scenes")
 HD_DIR = os.path.join(OUTPUT_DIR, "scenes_hd")
 MAPPING_FILE = os.path.join(OUTPUT_DIR, "scene_mapping.json")
+REF_DIR = "ref"
+
+# 角色参考图映射
+CHARACTER_IMAGES = {
+    "林知命": os.path.join(REF_DIR, "林知命.png"),
+    "姚静": os.path.join(REF_DIR, "姚静.png"),
+    "董建": os.path.join(REF_DIR, "董建.png"),
+}
 
 GLOBAL_SETTINGS = {
     "character_card": """
@@ -36,12 +44,12 @@ GLOBAL_SETTINGS = {
 - 中年男性，林知命心腹，面相沉稳
 """,
     "art_style": """
-宫崎骏手绘风格：
-- 细腻柔和的线条，色彩饱和度适中偏暖
-- 光影层次丰富，人物五官精致唯美
-- 背景环境写实精细，画面有电影质感和情绪氛围
-- 注重人物姿态、眼神、肢体语言传达情绪
-- 构图有呼吸感和空气感，避免呆板居中
+京都动画风格：
+- 精致细腻的作画，人物五官唯美，眼睛刻画深邃有神
+- 色彩明亮饱和，光影层次丰富，画面通透干净
+- 背景环境写实精细，细节丰富，有电影质感
+- 注重人物微表情、眼神、肢体语言的细腻刻画
+- 构图讲究，画面有呼吸感，情绪表达克制而有力
 """
 }
 
@@ -139,8 +147,38 @@ SAMPLE_NOVEL = """
 """
 
 
+def get_context_scenes(scene_file: str, mapping: dict, context_range: int = 2) -> dict:
+    """获取前后场景的上下文信息"""
+    # 提取当前场景编号
+    scene_num = int(scene_file.split("_")[1].split(".")[0])
+
+    context = {"prev": [], "next": []}
+
+    # 获取前N个场景
+    for i in range(scene_num - context_range, scene_num):
+        if i > 0:
+            prev_file = f"scene_{i:02d}.png"
+            if prev_file in mapping:
+                context["prev"].append({
+                    "id": i,
+                    "description": mapping[prev_file]["description"]
+                })
+
+    # 获取后N个场景
+    for i in range(scene_num + 1, scene_num + context_range + 1):
+        next_file = f"scene_{i:02d}.png"
+        if next_file in mapping:
+            context["next"].append({
+                "id": i,
+                "description": mapping[next_file]["description"]
+            })
+
+    return context
+
+
 def generate_enhanced_prompt(llm: LLMEngine, scene_meta: dict,
-                             character_card: str, art_style: str) -> str:
+                             character_card: str, art_style: str,
+                             context_scenes: dict = None) -> str:
     """根据镜头类型生成增强prompt"""
     shot_type = scene_meta["shot_type"]
     description = scene_meta["description"]
@@ -156,20 +194,42 @@ def generate_enhanced_prompt(llm: LLMEngine, scene_meta: dict,
     else:
         focus = "动作细节、场景细节"
 
+    # 事件格需要强调纠错
+    error_check = ""
+    if "事件格" in shot_type:
+        error_check = """
+⚠️ 纠错检查（仅当发现明显错误时才修正）：
+- 对比原文，检查人物关系、动作对象、动作方向是否正确
+- 如果发现逻辑错误（如攻击对象错误、人物关系错误），允许调整构图来修正
+- 如果原图正确，不要过度修改"""
+
     system = f"""你是京都动画的插画修复师，擅长在保持原图基础上补充细节和修正错误。
 
 ⚠️ 核心原则：
-1. 严格保持参考图的构图、人物姿态、画风、色调
-2. 只补充小说原文中存在但参考图缺失的细节
-3. 修正参考图中与原文不符的部分（如添加了原文没有的道具）
-4. 不改变整体画面结构，只做细节优化
+1. 【最高优先级】严格保持第一张参考图的构图、人物姿态、机位角度、画面布局
+2. 参考其他角色参考图来修正人物面部特征，确保角色外貌一致
+3. 只补充小说原文中存在但参考图缺失的细节
+4. 修正参考图中与原文不符的部分（如添加了原文没有的道具）
+5. 不改变整体画面结构，只做细节优化
+{error_check}
 
 镜头类型：{shot_type}
 重点强化：{focus}"""
 
+    # 构建上下文信息
+    context_info = ""
+    if context_scenes:
+        if context_scenes["prev"]:
+            prev_desc = "\n".join([f"  场景{s['id']}: {s['description']}" for s in context_scenes["prev"]])
+            context_info += f"\n【前置场景】（仅供理解故事线，不要画入当前场景）\n{prev_desc}\n"
+
+        if context_scenes["next"]:
+            next_desc = "\n".join([f"  场景{s['id']}: {s['description']}" for s in context_scenes["next"]])
+            context_info += f"\n【后续场景】（仅供理解故事线，不要画入当前场景）\n{next_desc}\n"
+
     user = f"""【参考图说明】
 参考图是已生成的插画，需要在其基础上进行细节补充和修正。
-
+{context_info}
 【角色设定】
 {character_card}
 
@@ -194,30 +254,47 @@ def generate_enhanced_prompt(llm: LLMEngine, scene_meta: dict,
     return llm.chat(user, system=system)
 
 
-def enhance_single_scene(scene_file: str, scene_meta: dict):
+def enhance_single_scene(scene_file: str, scene_meta: dict, mapping: dict):
     """增强单个场景"""
     print(f"\n处理 {scene_file}...")
     print(f"  镜头类型: {scene_meta['shot_type']}")
     print(f"  角色: {scene_meta['characters']}")
+
+    # 获取前后场景上下文
+    context_scenes = get_context_scenes(scene_file, mapping, context_range=2)
+    print(f"  上下文: 前{len(context_scenes['prev'])}个场景, 后{len(context_scenes['next'])}个场景")
 
     # 生成增强prompt
     llm = LLMEngine(model=LLM_MODEL, api_key=LLM_API_KEY)
     enhanced_prompt = generate_enhanced_prompt(
         llm, scene_meta,
         GLOBAL_SETTINGS["character_card"],
-        GLOBAL_SETTINGS["art_style"]
+        GLOBAL_SETTINGS["art_style"],
+        context_scenes
     )
 
     print(f"  增强prompt: {enhanced_prompt[:60]}...")
 
-    # 使用原scene作为参考图生成高清版
+    # 构建参考图列表：原scene图放第一位（权重最高）
     scene_path = os.path.join(SCENES_DIR, scene_file)
-    hd_path = os.path.join(HD_DIR, scene_file)
+    ref_images = [scene_path]
 
+    # 动态加载角色参考图
+    for char_name in scene_meta['characters']:
+        if char_name in CHARACTER_IMAGES:
+            char_path = CHARACTER_IMAGES[char_name]
+            if os.path.exists(char_path):
+                ref_images.append(char_path)
+                print(f"  ✅ 加载角色参考图: {char_name}")
+
+    print(f"  参考图数量: {len(ref_images)} (原scene + {len(ref_images)-1}个角色)")
+
+    # 生成高清版
+    hd_path = os.path.join(HD_DIR, scene_file)
     nano = NanobananaEngine()
     result = nano.generate(
         prompt=enhanced_prompt,
-        input_image=[scene_path],
+        input_image=ref_images,
         output_path=hd_path,
         aspect_ratio="16:9",
         image_size="2K"
@@ -262,7 +339,7 @@ def run_enhancement(test_scene: str = None):
             return
 
         print(f"\n🧪 测试模式：只处理 {test_scene}")
-        enhance_single_scene(test_scene, mapping[test_scene])
+        enhance_single_scene(test_scene, mapping[test_scene], mapping)
     else:
         # 批量处理所有场景（限制前2个）
         print(f"\n开始批量处理（前2个场景）...")
@@ -271,7 +348,7 @@ def run_enhancement(test_scene: str = None):
         for scene_file, meta in mapping.items():
             if count >= 2:
                 break
-            result = enhance_single_scene(scene_file, meta)
+            result = enhance_single_scene(scene_file, meta, mapping)
             if result:
                 success += 1
             count += 1
@@ -283,4 +360,5 @@ def run_enhancement(test_scene: str = None):
 
 if __name__ == "__main__":
     # 测试模式：只处理第一个场景
-    run_enhancement(test_scene="scene_01.png")
+    run_enhancement(test_scene="scene_02.png")
+    # run_enhancement()

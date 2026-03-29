@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "WebSearch",
-      "Bash(dir \"C:\\\\Users\\\\pc\\\\PycharmProjects\\\\TOOL\\\\Pictory\\\\pretrained_models\")"
+      "Bash(dir \"C:\\\\Users\\\\pc\\\\PycharmProjects\\\\TOOL\\\\Pictory\\\\pretrained_models\")",
+      "Bash(python main_grid.py)",
+      "Bash(python -u main_grid.py)",
+      "Bash(iconv -f gbk -t utf-8)",
+      "Bash(python test_grid.py)",
+      "Bash(python -c \"import json; data=json.load\\(open\\(''test_scenes.json'', encoding=''utf-8''\\)\\); [print\\(f''\\\\n场景{s[\"\"scene_id\"\"]}: {s[\"\"shot_type\"\"]}\\\\n描述: {s[\"\"description\"\"]}\\\\n主体: {s.get\\(\"\"action_subject\"\"\\)}\\\\n动作: {s.get\\(\"\"action_verb\"\"\\)}\\\\n对象: {s.get\\(\"\"action_target\"\"\\)}''\\) for s in data[8:12]]\")"
     ]
   },
   "enabledPlugins": {
