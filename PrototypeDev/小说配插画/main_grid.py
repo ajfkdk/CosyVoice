@@ -16,7 +16,7 @@ from grid_splitter import smart_split_grid
 
 # ── 配置 ──
 LLM_MODEL = "gemini-3.1-flash-lite"
-LLM_API_KEY = "sk-poe-0e4fhz3IYTMF_FIK_3yA_2ROHyYXRwrAal_-jWTTibE"
+LLM_API_KEY = "sk-poe-X5GOUooMd-EndZvgIs_4OjN2m34OUWJDLLE5FBT9-Cw"
 OUTPUT_DIR = "output_grid"
 REF_DIR = "ref"  # 参考图目录
 
