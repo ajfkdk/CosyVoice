@@ -331,9 +331,9 @@ def step4_compose_video(progress):
     logger.info("=" * 60)
     logger.info("[4/5] 合成视频")
     logger.info("=" * 60)
-    
+
     import subprocess
-    import wave
+    import json as json_lib
     
     with open(os.path.join(OUTPUT_DIR, "scene_mapping.json"), "r", encoding="utf-8") as f:
         mapping = json.load(f)
@@ -354,10 +354,14 @@ def step4_compose_video(progress):
         if not os.path.exists(audio_path):
             logger.warning(f"⚠️ Scene {scene_id:02d} 音频不存在，跳过")
             continue
-        
-        # 获取音频时长
-        with wave.open(audio_path, 'r') as wav:
-            duration = wav.getnframes() / wav.getframerate()
+
+        # 使用ffprobe获取音频时长
+        probe_cmd = [
+            'ffprobe', '-v', 'error', '-show_entries', 'format=duration',
+            '-of', 'json', audio_path
+        ]
+        result = subprocess.run(probe_cmd, capture_output=True, text=True, check=True)
+        duration = float(json_lib.loads(result.stdout)['format']['duration'])
         
         # 生成视频片段
         video_part = os.path.join(temp_dir, f"part_{scene_id:02d}.mp4")
