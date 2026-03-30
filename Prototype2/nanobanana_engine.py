@@ -4,9 +4,13 @@ import re
 import time
 from pathlib import Path
 
-NanoTOKEN='sk-wLxCvAqR3oYP1AjmaMalHgrK04o2pDINdA732Euuix1r72FU'
-APIURL="https://yinli.one/v1/chat/completions"
-NANOMODEL="gemini-3-pro-image-preview"
+# NanoTOKEN='sk-wLxCvAqR3oYP1AjmaMalHgrK04o2pDINdA732Euuix1r72FU'
+# APIURL="https://yinli.one/v1/chat/completions"
+# NANOMODEL="gemini-3-pro-image-preview"
+
+NanoTOKEN='sk-jscqrhYiCx2JDdHYyLyWjApzVtFPhM4CcOTjzQ89sthUTxn7'
+APIURL="https://api.mmw.ink/v1/chat/completions"
+NANOMODEL="[A]gemini-3-pro-image-preview-2k"
 
 class NanobananaEngine:
     def __init__(self, model=NANOMODEL, token=NanoTOKEN, max_retries=5):

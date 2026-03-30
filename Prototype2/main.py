@@ -260,8 +260,12 @@ def step3_generate_audio(novel_text, progress):
     logger.info("=" * 60)
     logger.info("[3/5] 生成音频")
     logger.info("=" * 60)
-    
-    sys.path.append('../../third_party/Matcha-TTS')
+
+    # 添加Matcha-TTS路径
+    matcha_path = r'C:\Users\pc\PycharmProjects\TOOL\Pictory\third_party\Matcha-TTS'
+    if matcha_path not in sys.path:
+        sys.path.insert(0, matcha_path)
+
     from cosyvoice.cli.cosyvoice import AutoModel
     import torchaudio
     

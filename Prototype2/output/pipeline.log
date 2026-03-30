@@ -16,3 +16,243 @@
 2026-03-29 14:04:00,958 [INFO] 生成故事prompt...
 2026-03-29 14:04:08,840 [INFO] HTTP Request: POST https://api.poe.com/v1/chat/completions "HTTP/1.1 200 OK"
 2026-03-29 14:04:08,843 [INFO] 生成16宫格图（参考图: 3张）...
+2026-03-29 14:04:44,286 [INFO] 拆分16宫格...
+2026-03-29 14:04:44,589 [INFO] ✅ 16宫格生成完成
+2026-03-29 14:04:44,589 [INFO] ============================================================
+2026-03-29 14:04:44,589 [INFO] [2/5] HD升级场景
+2026-03-29 14:04:44,589 [INFO] ============================================================
+2026-03-29 14:04:44,827 [INFO] 处理 Scene 01...
+2026-03-29 14:05:15,386 [INFO] ✅ Scene 01 HD完成
+2026-03-29 14:05:15,386 [INFO] 处理 Scene 02...
+2026-03-29 14:07:47,589 [INFO] ✅ Scene 02 HD完成
+2026-03-29 14:07:47,589 [INFO] 处理 Scene 03...
+2026-03-29 14:11:57,447 [INFO] ✅ Scene 03 HD完成
+2026-03-29 14:11:57,448 [INFO] 处理 Scene 04...
+2026-03-29 14:12:20,661 [INFO] ✅ Scene 04 HD完成
+2026-03-29 14:12:20,661 [INFO] 处理 Scene 05...
+2026-03-29 14:12:43,788 [INFO] ✅ Scene 05 HD完成
+2026-03-29 14:12:43,788 [INFO] 处理 Scene 06...
+2026-03-29 14:15:16,606 [INFO] ✅ Scene 06 HD完成
+2026-03-29 14:15:16,606 [INFO] 处理 Scene 07...
+2026-03-29 14:15:40,492 [INFO] ✅ Scene 07 HD完成
+2026-03-29 14:15:40,492 [INFO] 处理 Scene 08...
+2026-03-29 14:18:10,971 [INFO] ✅ Scene 08 HD完成
+2026-03-29 14:18:10,971 [INFO] 处理 Scene 09...
+2026-03-29 14:18:34,328 [INFO] ✅ Scene 09 HD完成
+2026-03-29 14:18:34,328 [INFO] 处理 Scene 10...
+2026-03-29 14:23:17,836 [INFO] ✅ Scene 10 HD完成
+2026-03-29 14:23:17,837 [INFO] 处理 Scene 11...
+2026-03-29 14:23:44,705 [INFO] ✅ Scene 11 HD完成
+2026-03-29 14:23:44,705 [INFO] 处理 Scene 12...
+2026-03-29 14:24:19,980 [ERROR] ❌ Scene 12 HD失败（已重试5次）: 403 Client Error: Forbidden for url: https://yinli.one/v1/chat/completions
+2026-03-29 14:24:19,980 [ERROR] ❌ 工作流失败: Scene 12 HD升级失败，停止工作流
+Traceback (most recent call last):
+  File "C:\Users\pc\PycharmProjects\TOOL\Pictory\Prototype2\main.py", line 243, in step2_enhance_scenes
+    nano.generate(
+  File "C:\Users\pc\PycharmProjects\TOOL\Pictory\Prototype2\nanobanana_engine.py", line 23, in generate
+    return self._generate_once(prompt, input_image, output_path, aspect_ratio, image_size)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pc\PycharmProjects\TOOL\Pictory\Prototype2\nanobanana_engine.py", line 61, in _generate_once
+    resp.raise_for_status()
+  File "D:\Develop\Python312\Lib\site-packages\requests\models.py", line 1021, in raise_for_status
+    raise HTTPError(http_error_msg, response=self)
+requests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://yinli.one/v1/chat/completions
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\pc\PycharmProjects\TOOL\Pictory\Prototype2\main.py", line 402, in main
+    step2_enhance_scenes(progress)
+  File "C:\Users\pc\PycharmProjects\TOOL\Pictory\Prototype2\main.py", line 254, in step2_enhance_scenes
+    raise RuntimeError(f"Scene {scene_id:02d} HD升级失败，停止工作流")
+RuntimeError: Scene 12 HD升级失败，停止工作流
+2026-03-30 20:06:11,828 [INFO] 检查依赖...
+2026-03-30 20:06:11,884 [INFO] ✅ 依赖检查通过
+2026-03-30 20:06:11,884 [INFO] 读取小说: novels.txt
+2026-03-30 20:06:11,884 [INFO] ⏭️ 16宫格已生成，跳过
+2026-03-30 20:06:11,884 [INFO] ============================================================
+2026-03-30 20:06:11,884 [INFO] [2/5] HD升级场景
+2026-03-30 20:06:11,884 [INFO] ============================================================
+2026-03-30 20:06:12,745 [INFO] ⏭️ Scene 01 HD已完成，跳过
+2026-03-30 20:06:12,745 [INFO] ⏭️ Scene 02 HD已完成，跳过
+2026-03-30 20:06:12,745 [INFO] ⏭️ Scene 03 HD已完成，跳过
+2026-03-30 20:06:12,745 [INFO] ⏭️ Scene 04 HD已完成，跳过
+2026-03-30 20:06:12,745 [INFO] ⏭️ Scene 05 HD已完成，跳过
+2026-03-30 20:06:12,745 [INFO] ⏭️ Scene 06 HD已完成，跳过
+2026-03-30 20:06:12,745 [INFO] ⏭️ Scene 07 HD已完成，跳过
+2026-03-30 20:06:12,745 [INFO] ⏭️ Scene 08 HD已完成，跳过
+2026-03-30 20:06:12,745 [INFO] ⏭️ Scene 09 HD已完成，跳过
+2026-03-30 20:06:12,745 [INFO] ⏭️ Scene 10 HD已完成，跳过
+2026-03-30 20:06:12,745 [INFO] ⏭️ Scene 11 HD已完成，跳过
+2026-03-30 20:06:12,745 [INFO] 处理 Scene 12...
+2026-03-30 20:06:46,544 [INFO] ✅ Scene 12 HD完成
+2026-03-30 20:06:46,544 [INFO] 处理 Scene 13...
+2026-03-30 20:10:52,790 [INFO] ✅ Scene 13 HD完成
+2026-03-30 20:10:52,791 [INFO] 处理 Scene 14...
+2026-03-30 20:11:54,668 [INFO] ✅ Scene 14 HD完成
+2026-03-30 20:11:54,668 [INFO] 处理 Scene 15...
+2026-03-30 20:13:41,269 [INFO] ✅ Scene 15 HD完成
+2026-03-30 20:13:41,269 [INFO] 处理 Scene 16...
+2026-03-30 20:14:20,705 [INFO] ✅ Scene 16 HD完成
+2026-03-30 20:14:20,705 [INFO] ✅ 所有场景HD升级完成
+2026-03-30 20:14:20,705 [INFO] ============================================================
+2026-03-30 20:14:20,705 [INFO] [3/5] 生成音频
+2026-03-30 20:14:20,705 [INFO] ============================================================
+2026-03-30 20:14:26,634 [INFO] 加载CosyVoice模型...
+2026-03-30 20:14:27,486 [ERROR] ❌ 工作流失败: problem in cosyvoice.flow.flow_matching - ModuleNotFoundError: No module named 'matcha'
+Traceback (most recent call last):
+  File "D:\Develop\Python312\Lib\pydoc.py", line 451, in safeimport
+    module = importlib.import_module(path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\importlib\__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1381, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1354, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1325, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 929, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 994, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "C:\Users\pc\PycharmProjects\TOOL\Pictory\cosyvoice\flow\flow_matching.py", line 17, in <module>
+    from matcha.models.components.flow_matching import BASECFM
+ModuleNotFoundError: No module named 'matcha'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\pc\PycharmProjects\TOOL\Pictory\Prototype2\main.py", line 403, in main
+    step3_generate_audio(novel_text, progress)
+  File "C:\Users\pc\PycharmProjects\TOOL\Pictory\Prototype2\main.py", line 293, in step3_generate_audio
+    cosyvoice = AutoModel(model_dir=COSYVOICE_MODEL)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pc\PycharmProjects\TOOL\Pictory\cosyvoice\cli\cosyvoice.py", line 236, in AutoModel
+    return CosyVoice3(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\pc\PycharmProjects\TOOL\Pictory\cosyvoice\cli\cosyvoice.py", line 200, in __init__
+    configs = load_hyperpyyaml(f, overrides={'qwen_pretrain_path': os.path.join(model_dir, 'CosyVoice-BlankEN')})
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\site-packages\hyperpyyaml\core.py", line 189, in load_hyperpyyaml
+    hparams = yaml.load(yaml_stream, Loader=loader)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\site-packages\yaml\__init__.py", line 81, in load
+    return loader.get_single_data()
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\site-packages\ruamel\yaml\constructor.py", line 119, in get_single_data
+    return self.construct_document(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\site-packages\ruamel\yaml\constructor.py", line 123, in construct_document
+    data = self.construct_object(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\site-packages\ruamel\yaml\constructor.py", line 150, in construct_object
+    data = self.construct_non_recursive_object(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\site-packages\ruamel\yaml\constructor.py", line 191, in construct_non_recursive_object
+    for _dummy in generator:
+  File "D:\Develop\Python312\Lib\site-packages\ruamel\yaml\constructor.py", line 629, in construct_yaml_map
+    value = self.construct_mapping(node)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\site-packages\ruamel\yaml\constructor.py", line 425, in construct_mapping
+    return BaseConstructor.construct_mapping(self, node, deep=deep)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\site-packages\ruamel\yaml\constructor.py", line 247, in construct_mapping
+    value = self.construct_object(value_node, deep=deep)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\site-packages\ruamel\yaml\constructor.py", line 150, in construct_object
+    data = self.construct_non_recursive_object(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\site-packages\ruamel\yaml\constructor.py", line 186, in construct_non_recursive_object
+    data = constructor(self, tag_suffix, node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\site-packages\hyperpyyaml\core.py", line 481, in _construct_object
+    args, kwargs = _load_node(loader, node)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\site-packages\hyperpyyaml\core.py", line 435, in _load_node
+    kwargs = loader.construct_mapping(node, deep=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\site-packages\ruamel\yaml\constructor.py", line 425, in construct_mapping
+    return BaseConstructor.construct_mapping(self, node, deep=deep)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\site-packages\ruamel\yaml\constructor.py", line 247, in construct_mapping
+    value = self.construct_object(value_node, deep=deep)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\site-packages\ruamel\yaml\constructor.py", line 150, in construct_object
+    data = self.construct_non_recursive_object(node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\site-packages\ruamel\yaml\constructor.py", line 186, in construct_non_recursive_object
+    data = constructor(self, tag_suffix, node)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\site-packages\hyperpyyaml\core.py", line 471, in _construct_object
+    callable_ = pydoc.locate(callable_string)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\pydoc.py", line 1721, in locate
+    nextmodule = safeimport('.'.join(parts[:n+1]), forceload)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Develop\Python312\Lib\pydoc.py", line 465, in safeimport
+    raise ErrorDuringImport(path, err)
+pydoc.ErrorDuringImport: problem in cosyvoice.flow.flow_matching - ModuleNotFoundError: No module named 'matcha'
+2026-03-30 21:40:02,982 [INFO] 检查依赖...
+2026-03-30 21:40:03,776 [INFO] ✅ 依赖检查通过
+2026-03-30 21:40:03,776 [INFO] 读取小说: novels.txt
+2026-03-30 21:40:03,777 [INFO] ⏭️ 16宫格已生成，跳过
+2026-03-30 21:40:03,777 [INFO] ============================================================
+2026-03-30 21:40:03,777 [INFO] [2/5] HD升级场景
+2026-03-30 21:40:03,777 [INFO] ============================================================
+2026-03-30 21:40:04,526 [INFO] ⏭️ Scene 01 HD已完成，跳过
+2026-03-30 21:40:04,526 [INFO] ⏭️ Scene 02 HD已完成，跳过
+2026-03-30 21:40:04,526 [INFO] ⏭️ Scene 03 HD已完成，跳过
+2026-03-30 21:40:04,526 [INFO] ⏭️ Scene 04 HD已完成，跳过
+2026-03-30 21:40:04,526 [INFO] ⏭️ Scene 05 HD已完成，跳过
+2026-03-30 21:40:04,536 [INFO] ⏭️ Scene 06 HD已完成，跳过
+2026-03-30 21:40:04,536 [INFO] ⏭️ Scene 07 HD已完成，跳过
+2026-03-30 21:40:04,536 [INFO] ⏭️ Scene 08 HD已完成，跳过
+2026-03-30 21:40:04,536 [INFO] ⏭️ Scene 09 HD已完成，跳过
+2026-03-30 21:40:04,536 [INFO] ⏭️ Scene 10 HD已完成，跳过
+2026-03-30 21:40:04,536 [INFO] ⏭️ Scene 11 HD已完成，跳过
+2026-03-30 21:40:04,536 [INFO] ⏭️ Scene 12 HD已完成，跳过
+2026-03-30 21:40:04,536 [INFO] ⏭️ Scene 13 HD已完成，跳过
+2026-03-30 21:40:04,536 [INFO] ⏭️ Scene 14 HD已完成，跳过
+2026-03-30 21:40:04,536 [INFO] ⏭️ Scene 15 HD已完成，跳过
+2026-03-30 21:40:04,536 [INFO] ⏭️ Scene 16 HD已完成，跳过
+2026-03-30 21:40:04,536 [INFO] ✅ 所有场景HD升级完成
+2026-03-30 21:40:04,536 [INFO] ============================================================
+2026-03-30 21:40:04,536 [INFO] [3/5] 生成音频
+2026-03-30 21:40:04,536 [INFO] ============================================================
+2026-03-30 21:40:04,538 [ERROR] ❌ 工作流失败: No module named 'cosyvoice'
+Traceback (most recent call last):
+  File "C:\Users\pc\PycharmProjects\TOOL\Pictory\Prototype2\main.py", line 407, in main
+    step3_generate_audio(novel_text, progress)
+  File "C:\Users\pc\PycharmProjects\TOOL\Pictory\Prototype2\main.py", line 269, in step3_generate_audio
+    from cosyvoice.cli.cosyvoice import AutoModel
+ModuleNotFoundError: No module named 'cosyvoice'
+2026-03-30 21:41:18,234 [INFO] 检查依赖...
+2026-03-30 21:41:18,266 [INFO] ✅ 依赖检查通过
+2026-03-30 21:41:18,266 [INFO] 读取小说: novels.txt
+2026-03-30 21:41:18,266 [INFO] ⏭️ 16宫格已生成，跳过
+2026-03-30 21:41:18,267 [INFO] ============================================================
+2026-03-30 21:41:18,267 [INFO] [2/5] HD升级场景
+2026-03-30 21:41:18,267 [INFO] ============================================================
+2026-03-30 21:41:18,945 [INFO] ⏭️ Scene 01 HD已完成，跳过
+2026-03-30 21:41:18,945 [INFO] ⏭️ Scene 02 HD已完成，跳过
+2026-03-30 21:41:18,945 [INFO] ⏭️ Scene 03 HD已完成，跳过
+2026-03-30 21:41:18,945 [INFO] ⏭️ Scene 04 HD已完成，跳过
+2026-03-30 21:41:18,945 [INFO] ⏭️ Scene 05 HD已完成，跳过
+2026-03-30 21:41:18,945 [INFO] ⏭️ Scene 06 HD已完成，跳过
+2026-03-30 21:41:18,945 [INFO] ⏭️ Scene 07 HD已完成，跳过
+2026-03-30 21:41:18,945 [INFO] ⏭️ Scene 08 HD已完成，跳过
+2026-03-30 21:41:18,945 [INFO] ⏭️ Scene 09 HD已完成，跳过
+2026-03-30 21:41:18,945 [INFO] ⏭️ Scene 10 HD已完成，跳过
+2026-03-30 21:41:18,945 [INFO] ⏭️ Scene 11 HD已完成，跳过
+2026-03-30 21:41:18,945 [INFO] ⏭️ Scene 12 HD已完成，跳过
+2026-03-30 21:41:18,945 [INFO] ⏭️ Scene 13 HD已完成，跳过
+2026-03-30 21:41:18,945 [INFO] ⏭️ Scene 14 HD已完成，跳过
+2026-03-30 21:41:18,945 [INFO] ⏭️ Scene 15 HD已完成，跳过
+2026-03-30 21:41:18,945 [INFO] ⏭️ Scene 16 HD已完成，跳过
+2026-03-30 21:41:18,946 [INFO] ✅ 所有场景HD升级完成
+2026-03-30 21:41:18,946 [INFO] ============================================================
+2026-03-30 21:41:18,946 [INFO] [3/5] 生成音频
+2026-03-30 21:41:18,946 [INFO] ============================================================
+2026-03-30 21:41:23,506 [INFO] 加载CosyVoice模型...
+2026-03-30 21:41:25,918 [INFO] input frame rate=25
+2026-03-30 21:41:34,730 [INFO] use wetext frontend
+2026-03-30 21:41:39,517 [INFO] 生成 Scene 01 音频...
+2026-03-30 21:41:40,756 [INFO] synthesis text 又是一个白云蓝天都无比明媚的早晨。
